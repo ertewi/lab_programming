@@ -70,7 +70,7 @@ int task_1 () {
 int task_2 () {
 	int n = 10, i, a;
 	printf("Enter N:");
-	int C[10], *p;
+	int C[100], *p;
 	p = C;
 	scanf("%d", &n);
 	for (i = 1; i <= n; i++) {
