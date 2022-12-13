@@ -22,7 +22,7 @@ int main(){
 	outtextxy (500, 135, "f(x) = sqr(x+2)");
 	outtextxy (370, 50, "f(x) = 9");
  	getch();            
- 	closegraph();        // закрываем графическое окно
+ 	closegraph();
  	return 0;
 }
 
