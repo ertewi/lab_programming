@@ -2,10 +2,11 @@
 #include <graphics.h>
 #include <math.h>
 #include <conio.h>
+#include <locale.h>
 #define COLOR(r,g,b) (r|(g<<8)|(b<<16)|15<<24)
 int task_1();
 int task_2();
-int draw(int x, int y, int col, float m ) {
+int draw(int x, int y, int col, float m = 1.5) {
 	setcolor(col);
 	// tail
 	moveto(x, y);
@@ -27,14 +28,15 @@ int draw(int x, int y, int col, float m ) {
 	circle(ceil(x+23*m), ceil(y+12*m), ceil(3*m));
 }
 int main(){
+	setlocale(LC_ALL, "Rus");
 	int v = -1;
 	while(v != 0){
-		printf("Введите цифру: \n");
+		printf("Введите цифру: \n"); // enter number
 		printf("__________________________________________________\n");
 		printf("|                                                 |\n");
-		printf("|   1). Свободное движение обьекта                |\n");
-		printf("|   2). Движение обьекта с помощью клавиатуры     |\n");
-		printf("|   0). Выход из программы                        |\n");
+		printf("|   1). Свободное движение обьекта                |\n"); // free object movement
+		printf("|   2). Движение обьекта с помощью клавиатуры     |\n"); // object movement with keyboard
+		printf("|   0). Выход из программы                        |\n"); // exit
 		printf("|_________________________________________________|\n");
 		scanf("%d", &v);
 		
@@ -54,13 +56,14 @@ int task_1() {
 	int x = 320, y = 180;
 	float m = 1.5;
 	int col;
-	printf("Enter color: \n");
+	printf("Введите цвет: \n"); // enter color
 	scanf("%d", &col);
 	initwindow(640,360);
-	moveto(320,180);
+	moveto(x, y);
 	
 	right_down:
 		while(x + 45 < 640 && y + 40 < 360) {
+			if(kbhit()) if(getch() == 27) goto exit;
 			draw(x, y, col, m);
 			delay(10);
 			draw(x, y, 0, m);
@@ -76,6 +79,7 @@ int task_1() {
     
     left_down:
     	while(x > 0 && y + 40 < 360) {
+    		if(kbhit()) if(getch() == 27) goto exit;
 			draw(x, y, col, m);
 			delay(10);
 			draw(x, y, 0, m);
@@ -91,6 +95,7 @@ int task_1() {
 	
     right_up:
     	while(x + 45 < 640 && y > 0) {
+    		if(kbhit()) if(getch() == 27) goto exit;
 			draw(x, y, col, m);
 			delay(10);
 			draw(x, y, 0, m);
@@ -106,6 +111,7 @@ int task_1() {
 	
     left_up:
     	while(x > 0 && y > 0) {
+    		if(kbhit()) if(getch() == 27) goto exit;
 			draw(x, y, col, m);
 			delay(10);
 			draw(x, y, 0, m);
@@ -128,9 +134,26 @@ int task_1() {
 
 
 int task_2() {
-	initwindow(640,360);
+	int col, x = 320, y = 180, code;
+	printf("Введите цвет: \n"); // enter color
+	scanf("%d", &col);
 	
-	getch();            
- 	closegraph();
+	initwindow(640,360);
+	moveto(x, y);
+	
+	while(1) {
+		draw(x, y, col);
+		code = getch();
+		if(code == 27) break;
+		draw(x, y, 0);
+		switch (code) {
+			case 75: x--; break; // left
+			case 77: x++; break; // right
+			case 72: y--; break; // up
+			case 80: y++; break; // down
+		}
+	}
+	
+	closegraph();
 	return 0;
 }
